@@ -6,11 +6,9 @@ import com.wolniarskim.objects.SnakeElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 public class GamePanel extends JPanel {
 
-//    private char[][] gameBoard = new char[GameWindow.getWIDTH()][GameWindow.getHEIGHT()];
     private int snakePositionY, snakePositionX;
     private final Food food;
     private final Snake snake;
@@ -40,7 +38,7 @@ public class GamePanel extends JPanel {
                 snake.addSize();
             }
 
-            // przechodzenie przez sciany
+            // moving cross the walls
             if (snakePositionY == GameWindow.getHEIGHT() - 10 && snake.getActualDirect() == 'd')
                 snakePositionY = -10;
             else if (snakePositionY == 0 && snake.getActualDirect() == 'u')
@@ -65,7 +63,6 @@ public class GamePanel extends JPanel {
                     closeGame();
                 }
             }
-            //        g.drawString("O",food.getPositionX(),food.getPositionY());
             g.setColor(Color.RED);
             g.fillRect(food.getPositionX(), food.getPositionY(), 10, 10);
             g.setColor(Color.BLACK);
@@ -77,7 +74,6 @@ public class GamePanel extends JPanel {
         else{
             super.paintComponent(g);
             for (SnakeElement element : snake.getSnakeElements()) {
-                //            g.drawString("#",element.getPositionX(),element.getPositionY());
                 g.setColor(Color.GREEN);
                 g.fillRect(element.getPositionX(), element.getPositionY(), 10, 10);
                 g.setColor(Color.BLACK);

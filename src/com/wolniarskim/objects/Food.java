@@ -25,6 +25,14 @@ public class Food {
                     draw = true;
                 }
             }
+            if(
+                    positionX < -10 ||
+                    positionX > GameWindow.getWIDTH()-10 ||
+                    positionY < -10 ||
+                    positionY > GameWindow.getHEIGHT()-10
+            ){
+                draw = true;
+            }
         }
     }
 

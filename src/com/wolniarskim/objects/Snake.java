@@ -8,16 +8,19 @@ public class Snake {
     private List<SnakeElement> snakeElements = new ArrayList<>();
     private static Snake snake;
     private int snakeSize;
+    private Boolean directChanged = false;
     // r = right
     // l = left
     // u = up
     // d = down
     private char snakeDirect;
+    private char actualDirect;
 
     private Snake(){
         snakeElements.add(new SnakeElement(300,300));
         snakeSize = 3;
         snakeDirect = 'r';
+        actualDirect = 'r';
     }
 
     public List<SnakeElement> getSnakeElements() {
@@ -46,7 +49,24 @@ public class Snake {
         snakeSize++;
     }
 
+    public Boolean getDirectChanged() {
+        return directChanged;
+    }
+
+    public char getActualDirect() {
+        return actualDirect;
+    }
+
+    public void setActualDirect(char actualDirect) {
+        this.actualDirect = actualDirect;
+    }
+
     public void setSnakeDirect(char snakeDirect) {
         this.snakeDirect = snakeDirect;
+        this.directChanged = true;
+    }
+
+    public int getSnakeSize() {
+        return snakeSize;
     }
 }

@@ -23,10 +23,12 @@ public class GameWindow extends JFrame {
     }
 
     private void initWindow(int width, int height){
+        ImageIcon img = new ImageIcon("resources/game_icon.png");
+        this.setIconImage(img.getImage());
         this.setSize(width,height);
-        GameWindow.WIDTH = width;
-        GameWindow.HEIGHT = height;
-        this.setResizable(false);
+        GameWindow.WIDTH = width-200;
+        GameWindow.HEIGHT = height-200;
+//        this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         gamePanel = new GamePanel();
@@ -52,19 +54,19 @@ public class GameWindow extends JFrame {
                         Snake snake = Snake.getInstance();
                         switch(e.getKeyCode()){
                             case 39:
-                                if(snake.getSnakeDirect() != 'l')
+                                if(snake.getActualDirect() != 'l')
                                     snake.setSnakeDirect('r');
                                 break;
                             case 40:
-                                if(snake.getSnakeDirect() != 'u')
+                                if(snake.getActualDirect() != 'u')
                                     snake.setSnakeDirect('d');
                                 break;
                             case 37:
-                                if(snake.getSnakeDirect() != 'r')
+                                if(snake.getActualDirect() != 'r')
                                     snake.setSnakeDirect('l');
                                 break;
                             case 38:
-                                if(snake.getSnakeDirect() != 'd')
+                                if(snake.getActualDirect() != 'd')
                                     snake.setSnakeDirect('u');
                                 break;
                         }

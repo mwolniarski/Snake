@@ -6,15 +6,20 @@ import com.wolniarskim.objects.SnakeElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class GamePanel extends JPanel {
 
-    private char[][] gameBoard = new char[GameWindow.getWIDTH()][GameWindow.getHEIGHT()];
+//    private char[][] gameBoard = new char[GameWindow.getWIDTH()][GameWindow.getHEIGHT()];
     private int snakePositionY, snakePositionX;
-    private Food food;
-    private Snake snake;
+    private final Food food;
+    private final Snake snake;
+    private Boolean gameOver;
+    private int score;
 
     public GamePanel(){
+        gameOver = false;
+        score = 0;
         snakePositionX = 300;
         snakePositionY = 300;
         snake = Snake.getInstance();
@@ -23,33 +28,68 @@ public class GamePanel extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if(snakePositionX == food.getPositionX() && snakePositionY == food.getPositionY()){
-            food.drawCoordinates();
-            snake.addSize();
-        }
-
-        if(snakePositionY == GameWindow.getHEIGHT())
-            snakePositionY = 0;
-        else if(snakePositionY == 0)
-            snakePositionY = GameWindow.getHEIGHT();
-        else if(snakePositionX == GameWindow.getWIDTH())
-            snakePositionX = 0;
-        else if(snakePositionX == 0)
-            snakePositionX = GameWindow.getWIDTH();
-
-        int foundElement = 0;
-        for(SnakeElement element : snake.getSnakeElements()){
-            g.drawString("#",element.getPositionX(),element.getPositionY());
-            if(element.getPositionX() == snakePositionX && element.getPositionY() == snakePositionY){
-                foundElement++;
+        if(!gameOver) {
+            super.paintComponent(g);
+            g.drawRect(0, 0, GameWindow.getHEIGHT(), GameWindow.getWIDTH());
+            if (snake.getDirectChanged()) {
+                snake.setActualDirect(snake.getSnakeDirect());
             }
-            if(foundElement > 1){
-                closeGame();
+            if (snakePositionX == food.getPositionX() && snakePositionY == food.getPositionY()) {
+                food.drawCoordinates();
+                score+=50;
+                snake.addSize();
             }
+
+            // przechodzenie przez sciany
+            if (snakePositionY == GameWindow.getHEIGHT() - 10 && snake.getActualDirect() == 'd')
+                snakePositionY = -10;
+            else if (snakePositionY == 0 && snake.getActualDirect() == 'u')
+                snakePositionY = GameWindow.getHEIGHT();
+            else if (snakePositionX == GameWindow.getWIDTH() - 10 && snake.getActualDirect() == 'r')
+                snakePositionX = -10;
+            else if (snakePositionX == 0 && snake.getActualDirect() == 'l')
+                snakePositionX = GameWindow.getWIDTH();
+
+            int foundElement = 0;
+            for (SnakeElement element : snake.getSnakeElements()) {
+                //            g.drawString("#",element.getPositionX(),element.getPositionY());
+                g.setColor(Color.GREEN);
+                g.fillRect(element.getPositionX(), element.getPositionY(), 10, 10);
+                g.setColor(Color.BLACK);
+                g.drawRect(element.getPositionX(), element.getPositionY(), 10, 10);
+                if (element.getPositionX() == snakePositionX && element.getPositionY() == snakePositionY) {
+                    foundElement++;
+                }
+                if (foundElement > 1) {
+                    gameOver = true;
+                    closeGame();
+                }
+            }
+            //        g.drawString("O",food.getPositionX(),food.getPositionY());
+            g.setColor(Color.RED);
+            g.fillRect(food.getPositionX(), food.getPositionY(), 10, 10);
+            g.setColor(Color.BLACK);
+            g.drawRect(food.getPositionX(), food.getPositionY(), 10, 10);
+            g.drawString("Score: "+ score,GameWindow.getHEIGHT()+100,GameWindow.getWIDTH());
+            g.drawString("Snake size: "+ snake.getSnakeSize(),GameWindow.getHEIGHT()+100,GameWindow.getWIDTH()+20);
+            changePosition();
         }
-        g.drawString("O",food.getPositionX(),food.getPositionY());
-        changePosition();
+        else{
+            super.paintComponent(g);
+            for (SnakeElement element : snake.getSnakeElements()) {
+                //            g.drawString("#",element.getPositionX(),element.getPositionY());
+                g.setColor(Color.GREEN);
+                g.fillRect(element.getPositionX(), element.getPositionY(), 10, 10);
+                g.setColor(Color.BLACK);
+                g.drawRect(element.getPositionX(), element.getPositionY(), 10, 10);
+            }
+            g.setColor(Color.RED);
+            g.fillRect(food.getPositionX(), food.getPositionY(), 10, 10);
+            g.setColor(Color.BLACK);
+            g.drawRect(food.getPositionX(), food.getPositionY(), 10, 10);
+            g.drawString("Score: "+ score,GameWindow.getHEIGHT()+100,GameWindow.getWIDTH()+10);
+            g.drawString("Snake size: "+ snake.getSnakeSize(),GameWindow.getHEIGHT()+100,GameWindow.getWIDTH()+10);
+        }
     }
 
     public void changePosition(){
@@ -68,6 +108,7 @@ public class GamePanel extends JPanel {
     }
 
     private void closeGame(){
+        JOptionPane.showMessageDialog(this,"Game Over!!! \n Your score: "+ score);
         System.exit(0);
     }
 }

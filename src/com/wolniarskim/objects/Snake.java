@@ -1,5 +1,7 @@
 package com.wolniarskim.objects;
 
+import configuration.Direct;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,18 +11,13 @@ public class Snake {
     private static Snake snake;
     private int snakeSize;
     private Boolean directChanged = false;
-    // r = right
-    // l = left
-    // u = up
-    // d = down
-    private char snakeDirect;
-    private char actualDirect;
+    private Direct snakeDirect;
+    private Direct actualDirect;
 
     private Snake(){
-        snakeElements.add(new SnakeElement(300,300));
-        snakeSize = 3;
-        snakeDirect = 'r';
-        actualDirect = 'r';
+        snakeSize = 7;
+        snakeDirect = Direct.RIGHT;
+        actualDirect = Direct.RIGHT;
     }
 
     public List<SnakeElement> getSnakeElements() {
@@ -41,7 +38,7 @@ public class Snake {
         return snake;
     }
 
-    public char getSnakeDirect() {
+    public Direct getSnakeDirect() {
         return snakeDirect;
     }
 
@@ -53,15 +50,15 @@ public class Snake {
         return directChanged;
     }
 
-    public char getActualDirect() {
+    public Direct getActualDirect() {
         return actualDirect;
     }
 
-    public void setActualDirect(char actualDirect) {
+    public void setActualDirect(Direct actualDirect) {
         this.actualDirect = actualDirect;
     }
 
-    public void setSnakeDirect(char snakeDirect) {
+    public void setSnakeDirect(Direct snakeDirect) {
         this.snakeDirect = snakeDirect;
         this.directChanged = true;
     }
